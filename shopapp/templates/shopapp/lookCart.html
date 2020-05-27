@@ -1,0 +1,43 @@
+<P>{{ process_message }}</P>
+<hr>
+
+<table border="1">
+    <thead>
+      <tr>
+        <th>カートid</th>
+        <th>顧客名</th>
+        <th>商品名</th>
+        <th>注文個数</th>
+        <th>変更後の注文個数</th>
+        <th>変更</th>
+        <th>削除</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cart in carts %}
+        <tr>
+            <form method="post" action="/shopapp/changeorderquantity/">
+                {% csrf_token %}
+                <td>{{ cart.id }}</td>
+                <td>{{ cart.customer.name }}</td>
+                <td>{{ cart.item.name }}</td>
+                <td>{{ cart.order_quantity }}個</td>
+                <td><input type="number" name="order_quantity"></td>
+                <!-- カートidとメールアドレスをhidden項目にする-->
+                <input type="hidden" name="cart_id" value='{{ cart.id }}''>
+                <input type="hidden" name="cart_customer_email" value='{{ cart.customer.email }}''>
+                <td><button type="submit" name="submit">変更</button></td>
+            </form>
+            
+            <form method="post" action="/shopapp/deletecartrecord/">
+                {% csrf_token %}
+               <!-- カートidとメールアドレスをhidden項目にする-->
+               <input type="hidden" name="cart_id" value='{{ cart.id }}''>
+               <input type="hidden" name="cart_customer_email" value='{{ cart.customer.email }}''>
+               <td><button type="submit" name="submit">削除</button></td>
+            </form>    
+        </tr>
+        
+      {% endfor %}
+    </tbody>
+  </table>
