@@ -1,0 +1,250 @@
+https://docs.djangoproject.com/ja/3.0/intro/tutorial05/
+pollsアプリケーション作成中
+--------
+
+https://noumenon-th.net/programming/2019/11/25/django-abstractuser/
+Django ログイン認証[login] [AbstractUser]を拡張するケース：Userモデルのカスタマイズ
+
+●Userモデルのデフォルト属性
+
+ユーザ (User)
+class models.User
+
+フィールド
+class models.User
+User オブジェクトには以下のフィー ルドがあります:
+
+
+username
+必須です。30 文字以下の文字列で、英数字 (アルファベット、数字、アン ダースコア) だけを使えます。
+
+Django 1.2 で変更されました: ユーザネームには今では @, +, . and - 等の文字列を 含めることが出来ます。
+first_name
+オプションです。30 文字以下です。オプションです。30 文字以下です。
+
+last_name
+オプションです。 30 文字以下です。
+
+email
+オプションです。 Email アドレスです。
+
+password
+必須です。パスワードのメタデータであるハッシュ値です (Django では生 のパスワードを保存しません)。
+生のパスワードは任意の長さでよく、どん な文字が入っていても構いません。
+●●●
+
+.venv\Script\activate
+
+django-admin startproject login_project
+cd login_project
+python manage.py startapp myapp
+
+login_project\session.pyに
+INSTALLED_APPS
+	myapp.apps.MyappConfig, 文末のカンマを忘れずに！
+
+INSTALLED_APPS = [
+    #'polls.apps.PollsConfig',  # アプリ追加例
+    'myapp.apps.MyappConfig',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+ーーー
+
+内側のmysiteディレクトリの中のurls.pyには，下記の内容を書き込みます．
+
+from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path('polls/', include('polls.urls')),
+    path('admin/', admin.site.urls),
+]
+また，pollsディレクトリの中のurls.pyには，下記の内容を書き込みます．
+
+
+from django.urls import path
+from . import views
+
+app_name = 'polls'
+
+urlpatterns = [
+    path('', views.index, name='index'),
+]
+
+myapp配下にフォルダを作成
+templates\myapp
+
+プロジェクトのsetting.pyに追記
+AUTH_USER_MODEL = 'myapp.CustomerUser'
+
+ーーーモデルの例
+class Employee(models.Model):
+   """
+   クラス（社員基礎情報）
+   """
+   code_7 = models.CharField(verbose_name='社員コード',max_length=7,primary_key=True,)
+   name = models.CharField(verbose_name='氏名',max_length=30,)
+   name_kana = models.CharField(verbose_name='カナ氏名',max_length=30,)
+   honbu = models.CharField(verbose_name='本部',max_length=30,)
+   dept = models.CharField(verbose_name='部室',max_length=30,)
+   yaku = models.CharField(verbose_name='役職',max_length=30,blank=True,null=True,)
+   ent_date = models.DateField(verbose_name='入社日',)
+   birth_date = models.DateField(verbose_name='生年月日',)
+   soshiki = models.CharField(verbose_name='組織コード',max_length=9,)
+   mail = models.CharField(verbose_name='メールアドレス',max_length=50,blank=True,null=True,)
+   choketsu = models.CharField(verbose_name='長欠',max_length=1,blank=True,null=True,)
+   kyushoku = models.CharField(verbose_name='休職',max_length=1,blank=True,null=True,)
+   
+   def __str__(self): # 管理画面などで表示するカラム
+       return self.code_7
+   
+   class Meta: # 管理画面上のタイトル
+       verbose_name = '社員基礎情報'
+       verbose_name_plural = '社員基礎情報'
+
+--------
+
+現在の自分の作業階層の現状）
+django_practice：プロジェクト（全体の設定ファイルがある）
+
+
+====================
+
+Dgango windows 環境構築方法
+https://sinyblog.com/django/tutorial_001/
+
+
+.\[仮想環境名]\Scripts\activate
+
+django-admin startproject プロジェクト名
+
+cd プロジェクト名
+
+python manage.py startapp アプリケーション名
+
+プロジェクトのurls.py 設定例）
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('blog/', include('blog.urls')),
+    path('post_get_app/', include('post_get_app.urls')),
+    path('user_app/', include('user_app.urls')),
+    path('blogs_app/', include('blogs_app.urls')),
+]
+
+
+============
+Django のログイン認証で使用するユーザモデルのデフォルト属性一覧
+https://leben.mobi/blog/django_login_user_model/python/
+
+Django AbstractBaseUserでカスタムユーザー作成(2019年12月13日)
+https://hodalog.com/how-to-create-user-sign-up-view/
+
+
+
+----------------------------------------
+https://awesome-linus.com/2019/04/03/django-get-models-from-another-app/
+Djangoで別アプリのモデルからimportしたい
+
+----------------------------------------
+
+https://noumenon-th.net/programming/python/
+思考の葉　Django入門サイト（分かりやすい）
+
+----------------------------------------
+https://eiry.bitbucket.io/index.html
+索引次へ |DjangoによるWebアプリケーション開発入門 (2017年バージョンで古い仕様記述だが、参考になる)
+----------------------------------------
+
+Djangoでログイン画面を作成する(Userモデルでログイン機能：UserモデルとProfileモデルを1対1で紐付けてログイン機能を実装編もあり)
+https://narito.ninja/blog/detail/40/
+
+
+Django 検索機能の基本[ListView]
+https://noumenon-th.net/programming/2019/12/18/django-search/
+
+
+==================
+
+https://github.com/shonan-py/django_practice.git
+
+cmd上でVSCodeを起動
+(cd で仮想環境フォルダやプロジェクト・アプリケーションフォルダを格納する最上位フォルダに移動後)
+>code .
+一例）
+C:\Users\okubo\Desktop\django_practice-master>code .
+
+
+
+gitignore.io
+	visaul studio code等と入力すると、設定ファイルを自動生成してくれる
+
+インストール済みの外部モジュールをリスト表示する->requirements.txtに記載
+>pip freeze
+
+
+高島講師から使用するツールについて下記連絡をいただいて
+おります。合わせてご確認ください。
+---------------------------------------------------------
+Djangoチュートリアルサイト）
+https://docs.djangoproject.com/ja/3.0/intro/tutorial02/
+
+
+MyPC）
+Pythonインストール先
+C:\Users\okubo\AppData\Local\Programs\Python\Python38
+
+インストール：Django-3.0.3
+
+Django用仮想環境フォルダ
+C:\Users\okubo\Envs
+
+
+
+https://qiita.com/kaki_k/items/7b178ad39394a031b50d
+
+
+Django を VSCode で 開発するまでの手順
+https://qiita.com/soh506/items/12a5df2d19f1c2c792fe
+
+
+----------------
+
+
+ Django環境に関してですが、下記ツールです。
+
+ ・VirtualBox 6.0.14
+ ・CentOS 7(CentOS-7-x86_64-Minimal-1908.iso)
+ ・python 3.6.8
+ ・Visual Studio Code
+ ・MySQL 8.0.18
+ ・Django 2.1
+ ・TeraTerm
+
+ ●Apache と mod_wsgi  (予定)
+
+ またプラグインなどですが、VSCエディターのプラグインも含め、
+ 開発環境手順書をまとめました。
+ https://qiita.com/security_cat/private/57023839398c6d4afa4b
+
+ こちら最終版ではないので随時更新していきますが、主なツールは概ね上記で確定です。
+ 他の講師陣の方に 上記サイトを参考に事前準備をしていただくようアナウンスお願いします。
+
+ よろしくお願いいたします。
+
+ 高島
+---------------------------------------------------------
+
+どうぞ、よろしくお願い致します。
+
+
+*********************************************************
+有限会社ナビット　（http://www.navit.co.jp/）
+代表取締役　　田中秀明（携帯：080-6595-6514）

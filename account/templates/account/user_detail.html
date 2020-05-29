@@ -1,0 +1,32 @@
+{% load static %}
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8" />
+    <title>ユーザ詳細</title>
+
+    <link rel='stylesheet' type='text/css' href='{% static "account/css/style.css" %}' />
+  
+</head>
+
+<body>
+    <div class="content">
+        <h3>ユーザ詳細</h3>
+        
+        <table border="1">
+            <th>id</th><th>お名前</th><th>メールアドレス</th>
+     
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+          
+            </tr>
+       
+        </table>
+    </div>
+
+</body>
+
+</html>

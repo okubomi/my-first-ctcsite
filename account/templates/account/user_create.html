@@ -1,0 +1,38 @@
+{% load static %}
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8" />
+    <title>ユーザ登録</title>
+
+    <link rel='stylesheet' type='text/css' href='{% static "account/css/style.css" %}' />
+  
+</head>
+
+<body>
+    <div class="content">
+        <h3>ユーザ登録</h3>
+  
+        <form method="POST" action="{% url 'account:user_create' %}">
+            {% csrf_token %}
+            <p>
+                お名前：<input type="text" name="name" class="text">
+            </p>
+            <p>
+                メールアドレス：<input type="text" name="email" class="text">
+            </p>
+            <p>
+                パスワード：<input type="text" name="password" class="text">
+            </p>
+            <p>
+                <input type="submit" value="登　録">
+           </p>
+        </form>
+
+ 
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+●models.py
+
+from django.db import models
+class Company(models.Model):
+     name = models.CharField(max_length = 200)
+     website = models.URLField()
+
+     def __str__(self):
+         return self.name
+
+class Employee(models.Model):
+     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+     firstname = models.CharField(max_length = 100)
+     lastname = models.CharField(max_length = 100)
+     email = models.EmailField()
+
+     def __str__(self):
+         return self.lastname + self.firstname
+
+
+# コマンドプロンプトでテーブル生成
+$ python manage.py makemigrations
+$ python manage.py migrate
+===============================================
+
+●python mange.py shell 
+# コマンドプロンプトでpythonシェルを起動しDB操作
+
+from user_app.models import Company, Employee
+c = Company(name='FooCampany', website='http://foo.com/')
+c.save() # これで作成される
+Company.objects.create(name='BarCampany', website='http://bar.com/')
+Company.objects.all() # 全ての要素のリスト取得
+
+c2 = Company(name='BarCampany', website='http://bar.com/')
+c2.save() 
+# c2会社データに属する社員を生成
+e = Employee(company=c2,  firstname='John', lastname='Suzuki', email='suzukij@foo.com')
+e.save()
+Employee.objects.all()
+
+# オブジェクトをひとつ取得し、各属性にアクセス
+cb = Company.objects.get(name='BarCampany')
+cb.id
+cb.name
+cb.website
+
+# 参照先の親テーブルレコードにアクセス
+emp = Employee.objects.get(email='suzukij@foo.com')
+emp.company.name
+emp.company.website
+

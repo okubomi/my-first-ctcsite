@@ -1,33 +1,15 @@
-from django.db import models
-from django.utils import timezone
+ウィジェットをPasswordInputとして使用
 
-# Create your models here.
-class Contents(models.Model):
-    content = models.CharField('商品名', max_length=20)
-    amount = models.IntegerField('数量', blank=True, default=0)
+from Django import forms
 
-    def __str__(self):
-        return self.content
-
-# --------------------------------------
-# カテゴリ
-class Category(models.Model):
-	# 説明
-	class Meta:
-		# テーブル定義名
-		db_table = 'categories'
-		
-	
-	# テーブル列定義
-	category_id = models.AutoField(verbose_name='カテゴリID',primary_key=True)
-	name = models.CharField(verbose_name='カテゴリ名', max_length=255)
-	
-	# 管理者サイト上での表示文字列
-	def __str__(self):
-		return self.name
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+    class Meta:
+        model = User
 
 
-# --------------------------------------
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
 
 # 商品
 class Item(models.Model):
@@ -38,15 +20,19 @@ class Item(models.Model):
 
     price = models.IntegerField(
         verbose_name='単価',
-	    blank=True, 
-	    default=0,
+	blank=True, 
+	default=0,
+        validators=[validators.MinValueValidator(0)],
     )
 
     stock_quantity = models.IntegerField(
-	    '在庫数', 
-	    blank=True, 
-	    default=0,
+	'在庫数', 
+	blank=True, 
+	default=0,
+        validators=[validators.MinValueValidator(0)],
     )
+
+
 
     def __str__(self):
         return self.name
@@ -57,7 +43,7 @@ class Item(models.Model):
 
 # --------------------------------------
 
- # 顧客
+# 顧客
 class Customer(models.Model):
 
     name = models.CharField(
@@ -94,7 +80,7 @@ class Customer(models.Model):
 
     class Meta:
         verbose_name = '顧客'
-        verbose_name_plural = '顧客リスト'      
+        verbose_name_plural = '顧客リスト'
 
 
 
@@ -128,7 +114,7 @@ class Cart(models.Model):
     )
 
     def __str__(self):
-        return self.customer.name
+        return self.customer
 
     class Meta:
         verbose_name = 'カート注文'

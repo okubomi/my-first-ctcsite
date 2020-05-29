@@ -1,0 +1,32 @@
+{% load static %}
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8" />
+    <title>ユーザ一覧</title>
+
+    <link rel='stylesheet' type='text/css' href='{% static "account/css/style.css" %}' />
+  
+</head>
+
+<body>
+    <div class="content">
+        <h3>ユーザ一覧</h3>
+
+        <table border="1">
+            <th>id</th><th>お名前</th><th>詳細</th>
+        {% for user in user_list %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                
+                <td><a href="/account/user_detail/{{ user.id }}">詳細</a> </td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+
+</body>
+
+</html>

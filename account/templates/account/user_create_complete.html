@@ -1,0 +1,33 @@
+{% load static %}
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8" />
+    <title>ユーザ登録</title>
+
+    <link rel='stylesheet' type='text/css' href='{% static "account/css/style.css" %}' />
+  
+</head>
+
+<body>
+    <div class="content">
+        <h3>ユーザ登録を完了しました。</h3>
+
+        {% if user_name %}
+            登録ユーザ情報       
+            <p>
+                {{ user_name }} 様
+            </p> 
+ 
+        {% endif %}
+  
+        <p>           
+            <a href="{% url 'account:user_create' %}">ユーザ登録へ戻る</a>
+        </p>
+  
+    </div>
+
+</body>
+
+</html>

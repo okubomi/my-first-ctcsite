@@ -1,0 +1,32 @@
+{% load static %}
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8" />
+    <title>トップメニュー</title>
+    <link rel='stylesheet' type='text/css' href='{% static "account/css/style.css" %}' />
+   
+</head>
+
+<body>
+    <div class="content">
+        <h3>ユーザ管理</h3>
+        <!-- <a href="/account/user_create/">ユーザ登録</a> -->
+        <p><a href="{% url 'account:user_create' %}">ユーザ登録</a></p>
+
+        <p><a href="{% url 'account:user_list' %}">ユーザ一覧</a></p>
+
+        <hr>
+        
+        <form method="GET" action="{% url 'account:user_find' %}">
+            お名前：<input type="text" name="search_name" />
+            <input type="submit" value="検索">
+        </form>
+
+
+    </div>
+
+</body>
+
+</html>

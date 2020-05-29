@@ -1,0 +1,162 @@
+python manage.py runserver
+
+python manage.py shell
+
+
+from account.models import User
+
+-------
+Customer
+    name 
+    address 
+    email
+    user_id
+    password
+
+
+from shopapp.models import Category
+
+Category.objects.values()
+
+
+
+from shopapp.models import Customer
+
+customer = Customer.objects.create(name="鈴木太郎", address="東京都渋谷区", email="suzuki@gmail.com",user_id="suzuki",password="suzuki")
+customer.save()
+
+Customer.objects.all()
+	<QuerySet [<Customer: 鈴木太郎>]>
+Customer.objects.values()
+	<QuerySet [{'id': 1, 'name': '鈴木太郎', 'address': '東京都渋谷区', 'email': 'suzuki@gmail.com', 'user_id': 'suzuki', 'password': 'suzuki'}]>
+
+# 複数件返す
+customer = Customer.objects.filter(user_id="suzuki")
+customer[0].name
+customer[0].address
+customer[0].email
+customer[0].user_id
+customer[0].password
+
+# 主キーで検索。1件を返す
+Customer.objects.get(pk=1).email
+
+customer = Customer.objects.get(email="takahasi@gmail.com")
+customer.name
+
+customer = Customer.objects.filter(id=carts[0].item_id)
+print(customer[0].name)
+
+customer = Customer.objects.get(id=1)
+customer.email
+
+# 値の更新
+customer.email = 'suzuki@yahooo.jp'
+customer.save()
+
+# レコードの削除
+customer = Customer.objects.get(id=1)
+customer.delete()
+
+
+-------
+Item
+    name
+    price
+    stock_quantity
+
+
+from shopapp.models import Item
+
+item = Item.objects.create(name="ボールペン", price=100, stock_quantity=20)
+item.save()
+Item.objects.values()
+
+
+-------
+
+# カート
+Cart
+
+    item = models.ForeignKey(
+        Item,
+        verbose_name='商品',
+        on_delete=models.CASCADE,
+    )
+
+
+    customer = models.ForeignKey(
+        Customer,
+        verbose_name='顧客',
+        on_delete=models.CASCADE,
+    )
+
+    order_quantity = models.IntegerField(
+	'個数', 
+	blank=True, 
+	default=1,
+    )
+
+    regist_date = models.DateTimeField(
+	verbose_name='登録日',
+        auto_now_add=True,
+    )
+
+
+from shopapp.models import Cart
+
+# カートレコードの生成・保存
+cart = Cart.objects.create(item=item, customer=customer, order_quantity=5)
+cart.save()
+Cart.objects.values()
+
+<QuerySet [{'id': 1, 'item_id': 1, 'customer_id': 1, 'order_quantity': 5, 'regist_date': datetime.datetime(2020, 5, 25, 6, 45, 55, 233395, tzinfo=<UTC>)}]>
+
+
+carts = Cart.objects.filter(id=1)
+item = Item.objects.filter(id=carts[0].item_id)
+print(item[0].name)
+print(item[0].price)
+print(item[0].stock_quantity)
+
+customer = Customer.objects.filter(id=carts[0].item_id)
+print(customer[0].name)
+print(customer[0].address)
+print(customer[0].email)
+print(customer[0].user_id)
+print(customer[0].password)
+
+# カートテーブルを顧客IDで検索
+carts = Cart.objects.filter(customer_id=1)
+
+
+from shopapp.models import Cart
+from shopapp.models import Customer
+customer = Customer.objects.get(email="takahashi@gmail.com")
+carts = Cart.objects.filter(customer=customer)
+
+>>> for cart in carts:    
+	print(cart.id)
+	print(cart.customer.name)
+	print(cart.item.name)
+	print(cart.order_quantity)
+... Enterキー
+高橋信也
+シャープペンシル
+1
+高橋信也
+消しゴム
+2
+
+----
+
+
+ボールペン
+シャープペンシル
+消しゴム
+
+takahashi@gmail.com
+koike@yahoo.com
+suzuki@yahoo.jp
+
+
