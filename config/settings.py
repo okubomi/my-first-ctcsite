@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'shopapp',
     'account.apps.AccountConfig',
+    'bizcomu',
 ]
 
 MIDDLEWARE = [
